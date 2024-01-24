@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:content="clr-namespace:WaveFunctionCollapse.Controls"
+             xmlns:models="clr-namespace:WaveFunctionCollapse.Models"
+             x:Class="WaveFunctionCollapse.MainPage"
+             Title="{Binding Title}">
+    <ContentPage.BindingContext>
+        <models:AppVerInfo />
+    </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="{Binding Version}" />
+    </ContentPage.ToolbarItems>
+    
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+            <!-- Images etc. at top of the app  -->
+            <Image
+                Source="dotnet_bot.png"
+                HeightRequest="185"
+                Aspect="AspectFit"
+                SemanticProperties.Description="dot net bot in a race car number eight" />
+            <!-- Create map -button that sends the user to map creation  -->
+            <Button
+                x:Name="NewMapBtn"
+                Text="Create a New Map" 
+                SemanticProperties.Hint="Sends you to new map creation"
+                Clicked="ToMapCreation"
+                HorizontalOptions="Fill" />
+            <!-- Divider for the maplist and add-button  -->
+            <BoxView HeightRequest="1" Color="LightGray"/>
+            <!-- MapList  -->
+            <content:MapList />
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

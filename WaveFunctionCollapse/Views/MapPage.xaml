@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:drawable="clr-namespace:WaveFunctionCollapse.Views"
+             x:Class="WaveFunctionCollapse.Views.MapPage"
+             Title="MapPage">
+    <ContentPage.Resources>
+        <drawable:MapCanvas x:Key="MapCanvas" />
+    </ContentPage.Resources>
+    <Grid Padding="20" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <!-- Label -->
+            <RowDefinition Height="*" />
+            <!-- Table view -->
+            <RowDefinition Height="75" />
+            <!-- Next and back buttons -->
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <!-- For Next and back buttons -->
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+
+        <ScrollView
+            Grid.Row="1"
+            Grid.Column="1" 
+            Orientation="Both">
+            <GraphicsView 
+                x:Name="canvas"                 
+                HorizontalOptions="Fill"
+                Drawable="{StaticResource MapCanvas}" 
+                HeightRequest="100"/>
+        </ScrollView>
+            <!-- Next and Back Buttons -->
+        <Button
+            x:Name="backButton"
+            Grid.Row="4" 
+            Grid.Column="0"
+            Text="Back" 
+            SemanticProperties.Hint="Back to the main page"
+            Clicked="backButton_Clicked"
+            HorizontalOptions="Fill" />
+    </Grid>
+</ContentPage>

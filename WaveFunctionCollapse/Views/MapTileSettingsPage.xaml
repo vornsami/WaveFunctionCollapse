@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WaveFunctionCollapse.Views.MapTileSettingsPage"
+             Title="TileSettingsPage">
+    <Grid Padding="20" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />  <!-- Label -->
+            <RowDefinition Height="*" />    <!-- Table view -->
+            <RowDefinition Height="75" />   <!-- Next and back buttons -->
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>  <!-- For Next and back buttons -->
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+
+        <Label 
+            Text="Set the map generation options"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" 
+            Grid.Row="0"
+            Grid.Column="1" />
+        <Label x:Name = "label"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" 
+            Grid.Row="0"
+            Grid.Column="2" />
+
+        <CollectionView x:Name="tileTypeTable"
+            Grid.Row="1"
+            Grid.Column="1"
+            SelectionMode="Multiple"
+            SelectionChanged="tileTypeTable_SelectionChanged" >
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout  x:Name="layout"
+                    Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout>
+                        <Label Text="X" FontSize="14"/>
+
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+
+        <!-- Next and Back Buttons -->
+        <Button
+            x:Name="backButton"
+            Grid.Row="4" 
+            Grid.Column="0"
+            Text="Back" 
+            SemanticProperties.Hint="Back to the main page"
+            Clicked="backButton_Clicked"
+            HorizontalOptions="Fill" />
+        <Button
+            x:Name="nextButton"
+            Grid.Row="4" 
+            Grid.Column="2"
+            Text="Generate!" 
+            SemanticProperties.Hint="Sends you to map generation"
+            Clicked="nextButton_Clicked"
+            HorizontalOptions="Fill" />
+
+    </Grid>
+</ContentPage>

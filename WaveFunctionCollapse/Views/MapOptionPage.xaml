@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:views="clr-namespace:WaveFunctionCollapse.Views"
+             x:Class="WaveFunctionCollapse.Views.MapOptionPage"
+             Title="OptionPage">
+    <Grid Padding="20" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" /> <!-- Label -->
+            <RowDefinition Height="75" /> <!-- Size -->
+            <RowDefinition Height="75" /> <!-- Tile Count -->
+            <RowDefinition Height="*" />
+            <RowDefinition Height="75" /> <!-- Next and back buttons -->
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <Label 
+            Text="Set the map generation options"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" 
+            Grid.Row="0"
+            Grid.Column="1" />
+
+        <!-- Size input -->
+        <Label  x:Name="sizelabel"
+            Grid.Row="1"
+            Grid.Column="0"
+            Text="Size:"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+        <HorizontalStackLayout
+            Padding="20"
+            Spacing="25" 
+            Grid.Row="1"
+            Grid.Column="1" >
+            <Entry  x:Name="mapsizex"
+                Text="100"
+                PlaceholderColor="Gray"
+                Placeholder="x" 
+                Keyboard="Numeric"
+                IsTextPredictionEnabled="false" 
+                BackgroundColor="WhiteSmoke"
+                HeightRequest="50"
+                WidthRequest="100"
+                MaxLength="4"
+                TextChanged="CheckNumeric" />
+            <Label
+                Text="x"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+            <Entry  x:Name="mapsizey"
+                Text="100"
+                PlaceholderColor="Gray" 
+                Placeholder="y" 
+                Keyboard="Numeric"
+                IsTextPredictionEnabled="false" 
+                BackgroundColor="WhiteSmoke"
+                HeightRequest="50"
+                WidthRequest="100"
+                MaxLength="4"
+                TextChanged="CheckNumeric" />
+        </HorizontalStackLayout>
+
+        <!-- Tile count input -->
+        <Label  x:Name="tilelabel"
+            Text="Number of tile types:"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" 
+            Grid.Row="2"
+            Grid.Column="0" />
+        <HorizontalStackLayout
+            Padding="20"
+            Spacing="25" 
+            Grid.Row="2"
+            Grid.Column="1" >
+            
+            <Entry  x:Name="tiletypecount"
+                Text="4"
+                PlaceholderColor="Gray"
+                Placeholder="n" 
+                Keyboard="Numeric"
+                IsTextPredictionEnabled="false" 
+                BackgroundColor="WhiteSmoke"
+                HeightRequest="50"
+                WidthRequest="100"
+                MaxLength="3"
+                TextChanged="CheckNumeric" />
+        </HorizontalStackLayout>
+        <!-- Next and Back Buttons -->
+        <Button
+            x:Name="backButton"
+            Grid.Row="4" 
+            Grid.Column="0"
+            Text="Back" 
+            SemanticProperties.Hint="Back to the main page"
+            Clicked="backButton_Clicked"
+            HorizontalOptions="Fill" />
+        <Button
+            x:Name="nextButton"
+            Grid.Row="4" 
+            Grid.Column="2"
+            Text="Next" 
+            SemanticProperties.Hint="Sends you to tile settings"
+            Clicked="nextButton_Clicked"
+            HorizontalOptions="Fill" />
+    </Grid>
+</ContentPage>
