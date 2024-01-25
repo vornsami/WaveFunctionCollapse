@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 using WaveFunctionCollapse.Models;
 
 namespace WaveFunctionCollapse.Views;
@@ -10,6 +11,8 @@ public partial class MapTileSettingsPage : ContentPage
     MapGenData generationData;
     TileSelection tileSelection;
 
+    public ICommand UpdateThisItemCommand { get; set; }
+
     public MapTileSettingsPage(MapGenData gendata)
     {
         InitializeComponent();
@@ -17,12 +20,20 @@ public partial class MapTileSettingsPage : ContentPage
 
         tileSelection = new TileSelection(gendata.tileTypeCount);
         
-        tileTypeTable.ItemsSource = tileSelection.FullList;
-        tileTypeTable.SelectedItem = tileSelection.SelectedList;
-
-        label.Text = tileSelection.Size + "";
+        tileTypeTable.ItemsSource = tileSelection.Interactions;
+        label.Text = tileSelection.Size + ""; // ??
         layout.Span = tileSelection.Size;
+
+        UpdateThisItemCommand = new Command<MapTileInteraction>(CheckboxChanged);
     }
+    private void CheckboxChanged(MapTileInteraction obj)
+    {
+        if (obj != null && obj.IsChecked)
+        {
+            // Needs to check/uncheck the mirror tile
+        }
+    }
+
     private async void backButton_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync($"{nameof(MapOptionPage)}");
@@ -30,31 +41,26 @@ public partial class MapTileSettingsPage : ContentPage
 
     private async void nextButton_Clicked(object sender, EventArgs e)
     {
-        for (int i = 0;i < tileSelection.SelectedList.Count; i++)
+        generationData.tileColors = new Color[generationData.tileTypeCount];
+
+        generationData.tileColors = [Colors.Red, Colors.Blue, Colors.Green, Colors.Cyan]; // Placeholder
+        /*for (int i = 0; i < generationData.tileColors.Length; i++)
         {
-            (int x, int y) pos = tileSelection.SelectedList[i];
+            generationData.tileColors[i] = Colors.Red;
+        }*/
+
+        for (int i = 0; i < tileSelection.Interactions.Count; i++)
+        {
+            MapTileInteraction mti = tileSelection.Interactions[i];
+            if (!mti.IsChecked) 
+                continue;
+
+            (int x, int y) = mti.Position;
             
-            generationData.tileData[pos.x] |= 1 << pos.y;
-            generationData.tileData[pos.y] |= 1 << pos.x;
+            generationData.tileData[x] |= 1 << y;
+            generationData.tileData[y] |= 1 << x;
         }
 
         await Navigation.PushAsync(new MapGenerationPage(generationData));
-    }
-
-    private void tileTypeTable_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        try
-        {
-            string a = e.CurrentSelection.First().GetType().ToString();
-            (int x, int y) comp = (1, 2);
-
-            if (!e.CurrentSelection.First().GetType().Equals(comp.GetType()))
-                return;
-            tileSelection.SelectedList = e.CurrentSelection.ToList().ConvertAll(o => ((int x, int y))o);
-        } catch (Exception eX)
-        {
-            Trace.WriteLine(eX);
-        }
-        
     }
 }

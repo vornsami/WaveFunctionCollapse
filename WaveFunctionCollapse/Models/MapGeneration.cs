@@ -54,7 +54,7 @@ namespace WaveFunctionCollapse.Models
                 UpdatePossibleMap(x, y, data, possibleMap, finalMap);
             }
 
-            MapData mapdata = new(finalMap);
+            MapData mapdata = new(finalMap, data.tileColors);
 
             return mapdata;
         }

@@ -15,7 +15,7 @@ public partial class MapGenerationPage : ContentPage
 
     protected override void OnAppearing()
     {
-        Dispatcher.Dispatch(async () => 
+        Dispatcher.Dispatch(async () =>
         {
             runGenerationAndRedirect();
         });

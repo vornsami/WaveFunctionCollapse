@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="WaveFunctionCollapse.Views.MapTileSettingsPage"
              Title="TileSettingsPage">
+
     <Grid Padding="20" >
         <Grid.RowDefinitions>
             <RowDefinition Height="100" />  <!-- Label -->
-            <RowDefinition Height="*" />    <!-- Table view -->
+            <RowDefinition Height="*" />
             <RowDefinition Height="75" />   <!-- Next and back buttons -->
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>  <!-- For Next and back buttons -->
@@ -30,7 +32,7 @@
         <CollectionView x:Name="tileTypeTable"
             Grid.Row="1"
             Grid.Column="1"
-            SelectionMode="Multiple"
+            SelectionMode="None"
             SelectionChanged="tileTypeTable_SelectionChanged" >
             <CollectionView.ItemsLayout>
                 <GridItemsLayout  x:Name="layout"
@@ -40,7 +42,16 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout>
-                        <Label Text="X" FontSize="14"/>
+                        <CheckBox IsChecked="{Binding IsChecked}">
+
+                            <CheckBox.Behaviors>
+                                <toolkit:EventToCommandBehavior
+                                    Command="{Binding BindingContext.UpdateThisItemCommand, Source={x:Reference tileTypeTable}}"
+                                    CommandParameter="{Binding .}"
+                                    EventName="CheckedChanged" />
+                            </CheckBox.Behaviors>
+
+                        </CheckBox>
 
                     </StackLayout>
                 </DataTemplate>

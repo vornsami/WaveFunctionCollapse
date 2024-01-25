@@ -10,8 +10,7 @@ namespace WaveFunctionCollapse.Models
 {
     internal class TileSelection
     {
-        public ObservableCollection<(int x, int y)> FullList { get; set; } = [];
-        public List<(int x, int y)> SelectedList { get; set; } = [];
+        public ObservableCollection<MapTileInteraction> Interactions { get; set; } = [];
 
         public int Size = 0;
 
@@ -28,7 +27,7 @@ namespace WaveFunctionCollapse.Models
                 int x = i % n;
                 int y = i / n;
                 (int, int) tup = (x, y);
-                FullList.Add(tup);
+                Interactions.Add(new MapTileInteraction { Position = tup });
             }
         }
     }

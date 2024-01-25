@@ -12,8 +12,8 @@ public partial class MapPage : ContentPage
     public MapPage(MapData map)
 	{
 		InitializeComponent();
-        canvas.HeightRequest = map.getHeight() * MAP_SCALE;
-        canvas.WidthRequest = map.getWidth() * MAP_SCALE;
+        canvas.HeightRequest = map.GetHeight() * MAP_SCALE;
+        canvas.WidthRequest = map.GetWidth() * MAP_SCALE;
         MapCanvas mapCanvas = (MapCanvas) canvas.Drawable;
         this.map = map;
         mapCanvas.setMap(map);
@@ -35,20 +35,21 @@ public class MapCanvas : IDrawable
         {
             canvas.StrokeColor = Colors.Red;
             canvas.StrokeSize = 6;
-            canvas.DrawLine(10, 10, 90, 100);
+            canvas.DrawLine(10, 10, 100, 100);
+            canvas.DrawLine(10, 100, 100, 10);
             return;
         }
         canvas.StrokeSize = 1;
-        int[,] mapTiles = map.getMap();
+        int[,] mapTiles = map.GetMap();
+        Color[] colors = map.GetColors();
 
-        for (int x = 0; x < map.getWidth(); x++)
+        for (int x = 0; x < map.GetWidth(); x++)
         {
-            for (int y = 0; y < map.getHeight(); y++)
+            for (int y = 0; y < map.GetHeight(); y++)
             {
-                canvas.FillColor = getColor(mapTiles[x,y]);
+                canvas.FillColor = colors[mapTiles[x,y]-1];
 
                 canvas.FillRectangle(x * MAP_SCALE, y * MAP_SCALE, MAP_SCALE, MAP_SCALE);
-
             }
         }
         
