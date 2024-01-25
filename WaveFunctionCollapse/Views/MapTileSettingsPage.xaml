@@ -32,8 +32,7 @@
         <CollectionView x:Name="tileTypeTable"
             Grid.Row="1"
             Grid.Column="1"
-            SelectionMode="None"
-            SelectionChanged="tileTypeTable_SelectionChanged" >
+            SelectionMode="None" >
             <CollectionView.ItemsLayout>
                 <GridItemsLayout  x:Name="layout"
                     Orientation="Vertical" />

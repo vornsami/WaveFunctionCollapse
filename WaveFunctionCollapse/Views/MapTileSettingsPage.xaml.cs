@@ -21,7 +21,7 @@ public partial class MapTileSettingsPage : ContentPage
         tileSelection = new TileSelection(gendata.tileTypeCount);
         
         tileTypeTable.ItemsSource = tileSelection.Interactions;
-        label.Text = tileSelection.Size + ""; // ??
+        label.Text = tileSelection.Size + "";
         layout.Span = tileSelection.Size;
 
         UpdateThisItemCommand = new Command<MapTileInteraction>(CheckboxChanged);

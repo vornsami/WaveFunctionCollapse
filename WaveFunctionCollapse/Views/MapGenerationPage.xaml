@@ -8,5 +8,6 @@
             Text="Generating... Please wait."
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+        <ActivityIndicator IsRunning="true" />
     </VerticalStackLayout>
 </ContentPage>
