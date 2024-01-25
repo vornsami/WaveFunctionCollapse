@@ -7,7 +7,8 @@
 
     <Grid Padding="20" >
         <Grid.RowDefinitions>
-            <RowDefinition Height="100" />  <!-- Label -->
+            <RowDefinition Height="100" /> <!-- Label -->
+            <RowDefinition Height="100" /> <!-- Color selectors -->
             <RowDefinition Height="*" />
             <RowDefinition Height="75" />   <!-- Next and back buttons -->
         </Grid.RowDefinitions>
@@ -28,9 +29,11 @@
             HorizontalOptions="Center" 
             Grid.Row="0"
             Grid.Column="2" />
+        
+        
 
         <CollectionView x:Name="tileTypeTable"
-            Grid.Row="1"
+            Grid.Row="2"
             Grid.Column="1"
             SelectionMode="None" >
             <CollectionView.ItemsLayout>
@@ -45,7 +48,7 @@
 
                             <CheckBox.Behaviors>
                                 <toolkit:EventToCommandBehavior
-                                    Command="{Binding BindingContext.UpdateThisItemCommand, Source={x:Reference tileTypeTable}}"
+                                    Command="{Binding BindingContext.UpdateCheckboxCommand, Source={x:Reference tileTypeTable}}"
                                     CommandParameter="{Binding .}"
                                     EventName="CheckedChanged" />
                             </CheckBox.Behaviors>

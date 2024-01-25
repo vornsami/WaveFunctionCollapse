@@ -11,7 +11,7 @@ public partial class MapTileSettingsPage : ContentPage
     MapGenData generationData;
     TileSelection tileSelection;
 
-    public ICommand UpdateThisItemCommand { get; set; }
+    public ICommand UpdateCheckboxCommand { get; set; }
 
     public MapTileSettingsPage(MapGenData gendata)
     {
@@ -24,13 +24,18 @@ public partial class MapTileSettingsPage : ContentPage
         label.Text = tileSelection.Size + "";
         layout.Span = tileSelection.Size;
 
-        UpdateThisItemCommand = new Command<MapTileInteraction>(CheckboxChanged);
+        BindingContext = this;
+        UpdateCheckboxCommand = new Command<MapTileInteraction>(CheckboxChanged);
     }
     private void CheckboxChanged(MapTileInteraction obj)
     {
-        if (obj != null && obj.IsChecked)
+        if (obj != null)
         {
             // Needs to check/uncheck the mirror tile
+
+            tileSelection.Interactions
+                .Where(t => t.Position.x == obj.Position.y && t.Position.y == obj.Position.x)
+                .First().IsChecked = obj.IsChecked;
         }
     }
 
