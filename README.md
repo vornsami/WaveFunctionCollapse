@@ -7,8 +7,6 @@ The app will have both a desktop and mobile versions, but desktop version will b
 
 (Explanation of the algorithm and the implementation here)
 
-The algorithm should have time complexity of O(n*m), where n is the number of tile types and m in the size of the map.
-
 # TODO
 - Saving and loading maps
 - Tile color selection
