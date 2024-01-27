@@ -72,8 +72,8 @@
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <HorizontalStackLayout HorizontalOptions="Center" >
-                        <CheckBox IsChecked="{Binding IsChecked}">
+                    <HorizontalStackLayout HorizontalOptions="Center" BackgroundColor="{Binding BackgroundColor}">
+                        <CheckBox IsChecked="{Binding IsChecked}" Color="{Binding Color}">
                             <CheckBox.Behaviors>
                                 <toolkit:EventToCommandBehavior
                                     Command="{Binding BindingContext.UpdateCheckboxCommand, Source={x:Reference tileTypeTable}}"

@@ -8,11 +8,23 @@ using System.Threading.Tasks;
 
 namespace WaveFunctionCollapse.Models
 {
-    internal class MapTileInteraction : INotifyPropertyChanged
+    public class MapTileInteraction : INotifyPropertyChanged
     {
 
         public (int x, int y) Position { get; set; }
         private bool _isChecked;
+        private Color _color;
+        private Color _backgroundColor;
+        public Color Color 
+        {
+            set { SetProperty(ref _color, value); }
+            get { return _color; }
+        }
+        public Color BackgroundColor
+        {
+            set { SetProperty(ref _backgroundColor, value); }
+            get { return _backgroundColor; }
+        }
         public bool IsChecked
         {
             set { SetProperty(ref _isChecked, value); }

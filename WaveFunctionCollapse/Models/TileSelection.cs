@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace WaveFunctionCollapse.Models
 {
     internal class TileSelection
     {
+        private Color DEFAULT_COLOR = Colors.Orange;
         public ObservableCollection<MapTileInteraction> Interactions { get; set; } = [];
         public ObservableCollection<ColorSelector> TileColors { get; set; } = [];
         public int Size = 0;
@@ -28,14 +30,21 @@ namespace WaveFunctionCollapse.Models
                 int x = i % n;
                 int y = i / n;
                 (int, int) tup = (x, y);
-                Interactions.Add(new MapTileInteraction { Position = tup });
+                Interactions.Add(new MapTileInteraction { Position = tup, Color = DEFAULT_COLOR, BackgroundColor = DEFAULT_COLOR.WithAlpha(0.5f) });
             }
         }
         private void BuildColorList(int n)
         {
             for (int i = 0; i < n; i++)
             {
-                TileColors.Add(new ColorSelector { TileColor = Colors.Orange });
+                MapTileInteraction[] checkboxColorList = Interactions
+                    .Where(a => a.Position.y == i)
+                    .ToArray();
+                MapTileInteraction[] backgroundColorList = Interactions
+                    .Where(a => a.Position.x == i)
+                    .ToArray();
+                Trace.WriteLine($"{checkboxColorList.Length}");
+                TileColors.Add(new ColorSelector { TileColor = DEFAULT_COLOR, CheckboxColors = checkboxColorList, BackgroundColors = backgroundColorList });
             }
         }
     }
