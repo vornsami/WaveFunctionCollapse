@@ -11,12 +11,13 @@ namespace WaveFunctionCollapse.Models
     internal class TileSelection
     {
         public ObservableCollection<MapTileInteraction> Interactions { get; set; } = [];
-
+        public ObservableCollection<ColorSelector> TileColors { get; set; } = [];
         public int Size = 0;
 
         public TileSelection(int n) {
             Size = n;
             BuildFullList(n);
+            BuildColorList(n);
         }
         private void BuildFullList(int n)
         {
@@ -28,6 +29,13 @@ namespace WaveFunctionCollapse.Models
                 int y = i / n;
                 (int, int) tup = (x, y);
                 Interactions.Add(new MapTileInteraction { Position = tup });
+            }
+        }
+        private void BuildColorList(int n)
+        {
+            for (int i = 0; i < n; i++)
+            {
+                TileColors.Add(new ColorSelector { TileColor = Colors.Orange });
             }
         }
     }

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="WaveFunctionCollapse.Views.MapTileSettingsPage"
-             Title="TileSettingsPage">
+             Title="TileSettingsPage" >
 
     <Grid Padding="20" >
         <Grid.RowDefinitions>
@@ -29,33 +29,59 @@
             HorizontalOptions="Center" 
             Grid.Row="0"
             Grid.Column="2" />
-        
-        
+
+        <CollectionView x:Name="colorTable"
+            Grid.Row="1"
+            Grid.Column="1"
+            SelectionMode="None" 
+            HorizontalOptions="Center" >
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout  
+                    x:Name="colorlayout"
+                    Orientation="Horizontal" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Ellipse Fill="{Binding TileColor}"
+                     Stroke="Black"
+                     StrokeThickness="3"
+                     WidthRequest="30"
+                     HeightRequest="30"
+                     HorizontalOptions="Start" >
+                        <Ellipse.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                Command="{Binding BindingContext.ColorSelector_Tapped, Source={x:Reference colorTable}}"
+                                CommandParameter="{Binding .}"
+                                Buttons="Primary"  />
+                        </Ellipse.GestureRecognizers>
+                    </Ellipse>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
         <CollectionView x:Name="tileTypeTable"
             Grid.Row="2"
             Grid.Column="1"
-            SelectionMode="None" >
+            SelectionMode="None"
+            HorizontalOptions="Center"  >
             <CollectionView.ItemsLayout>
-                <GridItemsLayout  x:Name="layout"
+                <GridItemsLayout  
+                    x:Name="layout"
                     Orientation="Vertical" />
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout>
+                    <HorizontalStackLayout HorizontalOptions="Center" >
                         <CheckBox IsChecked="{Binding IsChecked}">
-
                             <CheckBox.Behaviors>
                                 <toolkit:EventToCommandBehavior
                                     Command="{Binding BindingContext.UpdateCheckboxCommand, Source={x:Reference tileTypeTable}}"
                                     CommandParameter="{Binding .}"
                                     EventName="CheckedChanged" />
                             </CheckBox.Behaviors>
-
                         </CheckBox>
-
-                    </StackLayout>
+                    </HorizontalStackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
 

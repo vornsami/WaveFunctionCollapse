@@ -93,6 +93,8 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.6" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.6" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="Mopups" Version="1.3.0" />
+		<PackageReference Include="nor0x.Maui.ColorPicker" Version="1.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -109,6 +111,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Controls\MapList.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\ColorpickPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\MapGenerationPage.xaml">

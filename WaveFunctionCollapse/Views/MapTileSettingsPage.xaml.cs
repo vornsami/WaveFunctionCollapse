@@ -1,3 +1,4 @@
+using Mopups.Services;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -12,19 +13,25 @@ public partial class MapTileSettingsPage : ContentPage
     TileSelection tileSelection;
 
     public ICommand UpdateCheckboxCommand { get; set; }
+    public ICommand ColorSelector_Tapped { get; set; }
 
     public MapTileSettingsPage(MapGenData gendata)
     {
         InitializeComponent();
         generationData = gendata;
-
         tileSelection = new TileSelection(gendata.tileTypeCount);
-        
-        tileTypeTable.ItemsSource = tileSelection.Interactions;
-        label.Text = tileSelection.Size + "";
-        layout.Span = tileSelection.Size;
-
         BindingContext = this;
+
+        // Size label
+        label.Text = tileSelection.Size + "";
+
+        // Color selector
+        colorTable.ItemsSource = tileSelection.TileColors;
+        ColorSelector_Tapped = new Command<ColorSelector>(ColorSelectorTapped);
+
+        // Tile table initialisation
+        tileTypeTable.ItemsSource = tileSelection.Interactions;
+        layout.Span = tileSelection.Size;
         UpdateCheckboxCommand = new Command<MapTileInteraction>(CheckboxChanged);
     }
     private void CheckboxChanged(MapTileInteraction obj)
@@ -38,6 +45,11 @@ public partial class MapTileSettingsPage : ContentPage
                 .First().IsChecked = obj.IsChecked;
         }
     }
+    private void ColorSelectorTapped(ColorSelector obj)
+    {
+        Trace.WriteLine($"{obj.TileColor}");
+        MopupService.Instance.PushAsync(new ColorpickPopup(obj));
+    }
 
     private async void backButton_Clicked(object sender, EventArgs e)
     {
@@ -48,11 +60,11 @@ public partial class MapTileSettingsPage : ContentPage
     {
         generationData.tileColors = new Color[generationData.tileTypeCount];
 
-        generationData.tileColors = [Colors.Red, Colors.Blue, Colors.Green, Colors.Cyan]; // Placeholder
-        /*for (int i = 0; i < generationData.tileColors.Length; i++)
+        for (int i = 0; i < generationData.tileColors.Length; i++)
         {
-            generationData.tileColors[i] = Colors.Red;
-        }*/
+            ColorSelector colsel = tileSelection.TileColors[i];
+            generationData.tileColors[i] = colsel.TileColor;
+        }
 
         for (int i = 0; i < tileSelection.Interactions.Count; i++)
         {
@@ -68,4 +80,5 @@ public partial class MapTileSettingsPage : ContentPage
 
         await Navigation.PushAsync(new MapGenerationPage(generationData));
     }
+    
 }
