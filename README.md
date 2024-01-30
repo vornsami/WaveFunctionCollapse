@@ -10,7 +10,6 @@ The app will have both a desktop and mobile versions, but desktop version will b
 # TODO
 - Saving and loading maps
 - More flexible color selection
-- Tiles generated in random order to prevent streak-like patterns
 - Some work on visuals
 - Fix UI on mobile
 - Look into weighing tile probability
