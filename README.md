@@ -14,7 +14,6 @@ The app will have both a desktop and mobile versions, but desktop version will b
 - Fix UI on mobile
 - Look into weighing tile probability
   - Increase chance of a tile appearing based on adjacent tiles (Making the maps less chaotic)
-  - Ability to set the probability of a tile appearing
 
 # Known Issues
 - Unable to make a tile type not appear adjacent to itself
