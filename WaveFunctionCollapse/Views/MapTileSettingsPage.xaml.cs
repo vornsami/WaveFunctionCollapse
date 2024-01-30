@@ -2,6 +2,7 @@ using Mopups.Services;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
 using WaveFunctionCollapse.Models;
 
@@ -26,8 +27,8 @@ public partial class MapTileSettingsPage : ContentPage
         label.Text = tileSelection.Size + "";
 
         // Color selector
-        colorTable.ItemsSource = tileSelection.TileColors;
-        ColorSelector_Tapped = new Command<ColorSelector>(ColorSelectorTapped);
+        colorTable.ItemsSource = tileSelection.TileDataList;
+        ColorSelector_Tapped = new Command<TileData>(ColorSelectorTapped);
 
         // Tile table initialisation
         tileTypeTable.ItemsSource = tileSelection.Interactions;
@@ -45,7 +46,12 @@ public partial class MapTileSettingsPage : ContentPage
                 .First().IsChecked = obj.IsChecked;
         }
     }
-    private void ColorSelectorTapped(ColorSelector obj)
+    private void CheckNumeric(object sender, TextChangedEventArgs e)
+    {
+        string newText = e.NewTextValue;
+        ((Entry)sender).Text = Regex.Replace(newText, "[^0-9.]", "");
+    }
+    private void ColorSelectorTapped(TileData obj)
     {
         Trace.WriteLine($"{obj.TileColor}");
         MopupService.Instance.PushAsync(new ColorpickPopup(obj));
@@ -58,14 +64,17 @@ public partial class MapTileSettingsPage : ContentPage
 
     private async void nextButton_Clicked(object sender, EventArgs e)
     {
+        // Create color and tile weight list
         generationData.tileColors = new Color[generationData.tileTypeCount];
+        generationData.weights = new int[generationData.tileTypeCount];
 
         for (int i = 0; i < generationData.tileColors.Length; i++)
         {
-            ColorSelector colsel = tileSelection.TileColors[i];
+            TileData colsel = tileSelection.TileDataList[i];
             generationData.tileColors[i] = colsel.TileColor;
+            generationData.weights[i] = (colsel.TileWeight > 0)? colsel.TileWeight : 1;
         }
-
+        // Create interaction table
         for (int i = 0; i < tileSelection.Interactions.Count; i++)
         {
             MapTileInteraction mti = tileSelection.Interactions[i];

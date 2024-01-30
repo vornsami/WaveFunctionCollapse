@@ -12,6 +12,7 @@ namespace WaveFunctionCollapse.Models
         public int mapSizeX;
         public int mapSizeY;
         public int[] tileData;
+        public int[] weights;
         public Color[] tileColors;
     }
 }

@@ -13,7 +13,7 @@ namespace WaveFunctionCollapse.Models
     {
         private readonly Color DEFAULT_COLOR = Colors.Orange;
         public ObservableCollection<MapTileInteraction> Interactions { get; set; } = [];
-        public ObservableCollection<ColorSelector> TileColors { get; set; } = [];
+        public ObservableCollection<TileData> TileDataList { get; set; } = [];
         public int Size = 0;
 
         public TileSelection(int n) {
@@ -43,8 +43,7 @@ namespace WaveFunctionCollapse.Models
                 MapTileInteraction[] backgroundColorList = Interactions
                     .Where(a => a.Position.x == i)
                     .ToArray();
-                Trace.WriteLine($"{checkboxColorList.Length}");
-                TileColors.Add(new ColorSelector { TileColor = DEFAULT_COLOR, CheckboxColors = checkboxColorList, BackgroundColors = backgroundColorList });
+                TileDataList.Add(new TileData { TileColor = DEFAULT_COLOR, CheckboxColors = checkboxColorList, BackgroundColors = backgroundColorList, TileWeight = 10 });
             }
         }
     }

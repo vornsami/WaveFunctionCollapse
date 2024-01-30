@@ -23,27 +23,30 @@ namespace WaveFunctionCollapse.Models
             }
 
             int sizeX = data.mapSizeX, sizeY = data.mapSizeY, n = data.tileTypeCount;
+            
             // final map with the final map values
             int[,] finalMap = new int[sizeX, sizeY];
+            
             // contains which tiles are possible in any given tile, binary 0 is possible 1 is impossible
             int[,] possibleMap = new int[sizeX, sizeY];
 
             // Array of all the tiles in random order
-            var randomGenerator = new Random();
-            int[] ordered = Enumerable.Range(0, sizeX * sizeY).OrderBy(x => randomGenerator.Next()).ToArray();
+            var rand = new Random();
+            int[] ordered = Enumerable.Range(0, sizeX * sizeY).OrderBy(x => rand.Next()).ToArray();
             (int x, int y)[] randomTileArray = Array.ConvertAll(ordered, num => ((int a, int b))(num % sizeX, (num - (num % sizeX)) / sizeX));
 
+            int[] weights = data.weights;
 
             for (int i = 0; i < randomTileArray.Length; i++)
             {
                 // Gets tile from queue
                 (int x, int y) = randomTileArray[i];
-                // If tile already has a value, skip
+                // If tile already has a value, skip (Should never happen)
                 if (finalMap[x, y] > 0)
                     continue;
 
                 // Get the value from the possible map
-                int tileValue = GetRandomValidTile(possibleMap[x, y], n);
+                int tileValue = GetWeightedRandomValidTile(possibleMap[x, y], n, weights);
                 // Set the final tile value
                 finalMap[x, y] = tileValue;
 
@@ -69,13 +72,16 @@ namespace WaveFunctionCollapse.Models
             {
                 (int x, int y) = possibleTileQueue.Dequeue();
 
-                if (possibleMap[x, y] == (1 << data.tileTypeCount) - 1) 
+                if (possibleMap[x, y] == (1 << data.tileTypeCount) - 1)  // Should never happen
                     Trace.WriteLine("???????");
 
+                // Check which types of tiles can be adjacent to this tile
                 int value = possibleMap[x, y];
                 int possibleAdjacent = getPossibleTiles(value, tileData);
                 if (possibleAdjacent == 0)
                     continue;
+
+                // Update and add adjacent tiles to be examined
                 UpdateAndQueuePossibleTiles(possibleAdjacent, x - 1, y, data, possibleTileQueue, possibleMap, finalMap);
                 UpdateAndQueuePossibleTiles(possibleAdjacent, x + 1, y, data, possibleTileQueue, possibleMap, finalMap);
                 UpdateAndQueuePossibleTiles(possibleAdjacent, x, y - 1, data, possibleTileQueue, possibleMap, finalMap);
@@ -90,7 +96,7 @@ namespace WaveFunctionCollapse.Models
             Random rand = new();
             int possibleAsOnes = ~tile & ((1 << n) - 1);
             int validCount = int.PopCount(possibleAsOnes);
-            if (validCount == 0) 
+            if (validCount == 0) // Failsafe in case for some reason there are no tiles that can be placed
                 return 99;
 
             int ret = 0;
@@ -110,6 +116,50 @@ namespace WaveFunctionCollapse.Models
 
             return ret;
         }
+
+        private static int GetWeightedRandomValidTile(int tile, int n, int[] weights)
+        {
+            int possibleAsOnes = ~tile & ((1 << n) - 1);
+            int validCount = int.PopCount(possibleAsOnes);
+            if (validCount == 0) // Failsafe in case for some reason there are no tiles that can be placed
+                return 99;
+
+            int[] tileWeights = new int[validCount];
+            int[] tileNums = new int[validCount];
+
+            int t = 0;
+            for (int i = 0; i < n; i++)
+            {
+                if ((possibleAsOnes & 1) == 1)
+                {
+                    tileWeights[t] = weights[i];
+                    tileNums[t] = i;
+                    t++;
+                }
+                possibleAsOnes >>= 1;
+
+                if (i > n + 1 || t > validCount)
+                    throw new Exception("Too big number");
+            }
+
+            int targetPos = 0;
+            Random rand = new();
+
+            int target = rand.Next(tileWeights.Sum());
+
+            for (int i = 0; i <= validCount; i++)
+            {
+                target -= tileWeights[i];
+                if (target <= 0)
+                {
+                    targetPos = i;
+                    break;
+                }
+            }
+
+            return tileNums[targetPos] + 1;
+        }
+
         private static List<(int x, int y)> GetNextTiles(int x, int y, MapGenData data, int[,] finalMap)
         {
             // Figure out something better

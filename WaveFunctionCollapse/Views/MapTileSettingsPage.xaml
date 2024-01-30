@@ -42,19 +42,32 @@
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Ellipse Fill="{Binding TileColor}"
-                     Stroke="Black"
-                     StrokeThickness="3"
-                     WidthRequest="30"
-                     HeightRequest="30"
-                     HorizontalOptions="Start" >
-                        <Ellipse.GestureRecognizers>
-                            <TapGestureRecognizer 
-                                Command="{Binding BindingContext.ColorSelector_Tapped, Source={x:Reference colorTable}}"
-                                CommandParameter="{Binding .}"
-                                Buttons="Primary"  />
-                        </Ellipse.GestureRecognizers>
-                    </Ellipse>
+                    <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                        <Ellipse Fill="{Binding TileColor}"
+                         Stroke="Black"
+                         StrokeThickness="3"
+                         WidthRequest="30"
+                         HeightRequest="30"
+                         HorizontalOptions="Start" >
+                            <Ellipse.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                    Command="{Binding BindingContext.ColorSelector_Tapped, Source={x:Reference colorTable}}"
+                                    CommandParameter="{Binding .}"
+                                    Buttons="Primary"  />
+                            </Ellipse.GestureRecognizers>
+                        </Ellipse>
+                        <Entry 
+                            Text="{Binding TileWeight}"
+                            PlaceholderColor="Gray"
+                            Placeholder="Weight" 
+                            Keyboard="Numeric"
+                            IsTextPredictionEnabled="false" 
+                            BackgroundColor="WhiteSmoke"
+                            HeightRequest="40"
+                            WidthRequest="60"
+                            MaxLength="3"
+                            TextChanged="CheckNumeric" />   
+                    </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
