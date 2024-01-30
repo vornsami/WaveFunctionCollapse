@@ -11,7 +11,7 @@ namespace WaveFunctionCollapse.Models
 {
     internal class TileSelection
     {
-        private Color DEFAULT_COLOR = Colors.Orange;
+        private readonly Color DEFAULT_COLOR = Colors.Orange;
         public ObservableCollection<MapTileInteraction> Interactions { get; set; } = [];
         public ObservableCollection<ColorSelector> TileColors { get; set; } = [];
         public int Size = 0;

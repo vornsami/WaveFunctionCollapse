@@ -2,16 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WaveFunctionCollapse.Models
 {
     internal class MapGeneration
     {
-        
-
         public static MapData GenerateMap(MapGenData data)
         {
             // setup
@@ -27,16 +27,17 @@ namespace WaveFunctionCollapse.Models
             int[,] finalMap = new int[sizeX, sizeY];
             // contains which tiles are possible in any given tile, binary 0 is possible 1 is impossible
             int[,] possibleMap = new int[sizeX, sizeY];
-            // Queue for next tile
-            Queue<(int x, int y)> tileSettingQueue = new();
 
-            // starting point at the center of the map
-            tileSettingQueue.Enqueue((sizeX/2,sizeY/2));
+            // Array of all the tiles in random order
+            var randomGenerator = new Random();
+            int[] ordered = Enumerable.Range(0, sizeX * sizeY).OrderBy(x => randomGenerator.Next()).ToArray();
+            (int x, int y)[] randomTileArray = Array.ConvertAll(ordered, num => ((int a, int b))(num % sizeX, (num - (num % sizeX)) / sizeX));
 
-            while (tileSettingQueue.Count > 0)
+
+            for (int i = 0; i < randomTileArray.Length; i++)
             {
                 // Gets tile from queue
-                (int x, int y) = tileSettingQueue.Dequeue();
+                (int x, int y) = randomTileArray[i];
                 // If tile already has a value, skip
                 if (finalMap[x, y] > 0)
                     continue;
@@ -50,7 +51,6 @@ namespace WaveFunctionCollapse.Models
                 possibleMapTile &= (1 << n) - 1;
                 possibleMap[x, y] = possibleMapTile;
 
-                GetNextTiles(x, y, data, finalMap).ForEach(tileSettingQueue.Enqueue);
                 UpdatePossibleMap(x, y, data, possibleMap, finalMap);
             }
 
@@ -69,7 +69,7 @@ namespace WaveFunctionCollapse.Models
             {
                 (int x, int y) = possibleTileQueue.Dequeue();
 
-                if (possibleMap[x, y] == (1 << data.tileTypeCount)-1) 
+                if (possibleMap[x, y] == (1 << data.tileTypeCount) - 1) 
                     Trace.WriteLine("???????");
 
                 int value = possibleMap[x, y];
@@ -121,7 +121,7 @@ namespace WaveFunctionCollapse.Models
                 CheckTile(x, y + 1, data, finalMap),
             ];
             
-            return list.Select(a => a).Where(a => a.x!=-1).ToList();
+            return list.Select(a => a).Where(a => a.x != -1).ToList();
         }
         private static (int x, int y) CheckTile(int x, int y, MapGenData data, int[,] finalMap)
         {

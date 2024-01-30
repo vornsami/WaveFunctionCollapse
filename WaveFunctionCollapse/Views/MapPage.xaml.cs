@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Drawing;
 using WaveFunctionCollapse.Models;
 using Color = Microsoft.Maui.Graphics.Color;
@@ -47,7 +48,15 @@ public class MapCanvas : IDrawable
         {
             for (int y = 0; y < map.GetHeight(); y++)
             {
-                canvas.FillColor = colors[mapTiles[x,y]-1];
+                try
+                {
+                    canvas.FillColor = colors[mapTiles[x,y]-1];
+
+                } catch (Exception e)
+                {
+                    Trace.WriteLine($"Failed to select color, expected number between 0-{colors.Length - 1}, number received: {mapTiles[x, y] - 1}");
+                    canvas.FillColor = Colors.White;
+                }
 
                 canvas.FillRectangle(x * MAP_SCALE, y * MAP_SCALE, MAP_SCALE, MAP_SCALE);
             }
