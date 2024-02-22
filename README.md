@@ -11,9 +11,10 @@ The app will have both a desktop and mobile versions, but desktop version will b
 - Saving and loading maps
 - More flexible color selection
 - Some work on visuals
-- Fix UI on mobile
+- Make the mobile build work
 - Look into weighing tile probability
   - Increase chance of a tile appearing based on adjacent tiles (Making the maps less chaotic)
+- Ability to have different rules for north, south, east and west -directions
 
 # Known Issues
 - Unable to make a tile type not appear adjacent to itself
